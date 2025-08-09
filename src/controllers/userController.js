@@ -24,6 +24,26 @@ const getUserById = async (req, res) => {
     }
 };
 
+// Delete a user by ID
+const deleteUser = async (req, res) => {
+    try {
+        const userId = req.params.id;
+
+        // Optionally: Only allow self-delete or admin, e.g. if (req.user.userId !== userId) return res.status(403);
+        const deletedUser = await User.findByIdAndDelete(userId);
+
+        if (!deletedUser)
+            return res.status(404).json({ message: 'User not found' });
+
+        res.json({ message: 'User deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error: error.message });
+    }
+};
+
 module.exports = {
-    getAllUsers, getUserById
-}
+    getAllUsers,
+    getUserById,
+    deleteUser
+};
+

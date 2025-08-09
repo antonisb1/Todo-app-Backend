@@ -15,8 +15,8 @@ router.use(authenticateToken);
 
 router.get('/all', getAllTasks);       // All tasks (admin view, if wanted)
 router.get('/', getTasks);             // User's tasks
-router.get('/:id', getTaskById);       // Specific task (user's)
-router.post('/', addTask);
+router.get('/:id', getTaskById);       // Specific task (user's)S
+router.post('/', authenticateToken, addTask); // <--- Make sure this is present!
 router.put('/:id', editTask);
 router.delete('/:id', removeTask);
 
