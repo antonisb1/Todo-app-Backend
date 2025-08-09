@@ -1,6 +1,6 @@
-// config/database.js (MongoDB version)
 const mongoose = require('mongoose');
 
+// Connect to MongoDB
 const connectDB = async () => {
     try {
         await mongoose.connect(process.env.MONGODB_URI, {
@@ -14,23 +14,8 @@ const connectDB = async () => {
     }
 };
 
-// User Schema
-const userSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    lastname: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true }
-}, { timestamps: true });
-
-// Todo Schema
-const taskSchema = new mongoose.Schema({
-    title: { type: String, required: true },
-    description: String,
-    status: { type: String, enum: ['todo', 'in-progress', 'done'], default: 'Task' },
-    user_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }
-}, { timestamps: true });
-
-const User = mongoose.model('User', userSchema);
-const Task = mongoose.model('Task', taskSchema);
+// Import models from /models
+const User = require('../models/User');
+const Task = require('../models/Task');
 
 module.exports = { connectDB, User, Task };
