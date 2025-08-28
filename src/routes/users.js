@@ -5,7 +5,7 @@ const { authenticateToken } = require('../middleware/authMiddleware');
 
 router.use(authenticateToken);
 
-router.get('/', getAllUsers);      // <--- These must all be functions
+router.get('/all', getAllUsers);      // <--- These must all be functions
 router.get('/:id', getUserById);
 router.delete('/:id', deleteUser);
 
