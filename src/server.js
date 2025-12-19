@@ -6,7 +6,14 @@ const dotenv = require('dotenv');
 const { connectDB } = require('./config/database'); // MongoDB connection utility
 
 // Load environment variables from .env file
-dotenv.config();
+require('dotenv').config({
+    path: require('path').resolve(__dirname, '../.env')
+});
+
+if (!process.env.MONGODB_URI) {
+    throw new Error('MONGODB_URI is not set');
+}
+
 
 // Import route modules
 const authRoutes = require('./routes/auth');
@@ -15,6 +22,16 @@ const userRoutes = require('./routes/users'); // Import user routes
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+    res.status(200).json({ status: 'healthy' });
+});
+
+// Readiness check endpoint
+app.get('/ready', (req, res) => {
+    res.status(200).json({ status: 'ready' });
+});
 
 // Middleware setup
 app.use(cors()); // Enable CORS for frontend requests
@@ -43,6 +60,15 @@ const startServer = async () => {
         process.exit(1);
     }
 };
+
+const shutdown = async () => {
+    console.log('Shutdown signal received');
+    process.exit(0);
+};
+
+process.on('SIGTERM', shutdown);
+process.on('SIGINT', shutdown);
+
 
 // Invoke start function
 startServer();
