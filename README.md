@@ -140,3 +140,64 @@ Implemented a modular Node.js backend with authentication, MongoDB data persiste
 The separation between models, controllers, services, and routes makes it easy to expand and maintain. 
 The switch from mock data to live MongoDB models is a key milestone—now the app is production-ready in structure.
 The architecture follows industry best practices and provides a strong foundation for scaling the application with additional features like role-based permissions, real-time updates, and advanced querying capabilities.
+
+
+
+
+ToDo App – Azure Deployment Documentation
+
+Overview
+This document describes the complete deployment of a full-stack ToDo application to Microsoft Azure.
+The application consists of a React (Vite) frontend with Typescript, a Node.js backend, and a MongoDB-compatible database hosted on Azure Document DB.
+The deployment includes CI/CD automation and secret management
+
+Architecture
+- Frontend: Azure Static Web Apps
+- Backend: Azure App Service (Node.js, Linux)
+- Database: Azure Cosmos DB (MongoDB API)
+- Secrets: Azure Key Vault with Managed Identity
+- CI/CD: GitHub Actions
+
+Backend Deployment
+1. Created an Azure App Service (Linux, Node.js).
+2. Configured application settings (MONGODB_URI, JWT_SECRET).
+3. Enabled System Assigned Managed Identity.
+4. Granted Key Vault Secrets User role to the App Service.
+5. Connected backend to Cosmos DB using Document DB.
+6. Verified backend via health endpoint.
+
+Database Setup
+- Created Cosmos DB account using Document.
+- Migrated local MongoDB data using MongoDB Compass.
+- Used “Self (always this cluster)” connection string.
+
+Secrets Management
+- Stored MongoDbUri and JwtSecret in Azure Key Vault.
+- Referenced secrets using @Microsoft.KeyVault syntax.
+- Resolved RBAC and networking access issues.
+
+Frontend Deployment
+1. Built React frontend using Vite (output: dist).
+2. Created Azure Static Web App linked to GitHub repository.
+3. Configured GitHub Actions CI/CD workflow.
+4. Injected VITE_API_BASE_URL at build time.
+5. Configured SPA routing with staticwebapp.config.json.
+
+CI/CD
+- Automated builds and deployments via GitHub Actions.
+- Separate build and deploy steps for frontend.
+- Environment variables injected at build time.
+
+API Integration
+- Ensured frontend calls backend using absolute API URL.
+
+Troubleshooting
+- Fixed undefined environment variables in Azure static web apps using Github Actions and Github environmental variables.
+- Resolved Method Not Allowed errors by correcting API URLs.
+- Addressed quota and RBAC issues.
+- Fixed SPA refresh 404 using navigation fallback.
+
+Conclusion
+The application is fully deployed to Azure using best practices.
+The setup demonstrates cloud-native architecture, security, automation, and scalability.
+
