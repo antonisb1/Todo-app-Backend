@@ -105,15 +105,14 @@ Each route file imports the relevant controller and applies middleware where nee
 Not committed to version control for security.
 
 9. Implementation Decisions & Rationale
-
-1.	Moved models to /models so database.js is now smaller and only handles connection & exports — cleaner separation and easier scaling
-2.	Introduced Service Layer (userService.js) to encapsulate user-related DB logic, making it reusable in multiple controllers
-3.	Refactored from mock data to MongoDB queries for tasks
-4.	Standardized model naming to avoid .find() on undefined errors (e.g., Task vs Todo)
-5.	Protected all sensitive endpoints with authenticateToken middleware
+a)Moved models to /models so database.js is now smaller and only handles connection & exports — cleaner separation and easier scaling.
+b)Introduced Service Layer (userService.js) to encapsulate user-related DB logic, making it reusable in multiple controllers.
+c)Refactored from mock data to MongoDB queries for tasks.
+d)Standardized model naming to avoid .find() on undefined errors (e.g., Task vs Todo).
+e)Protected all sensitive endpoints with authenticateToken middleware.
 
 10. Example API Workflow
-1. Register User
+i) Register User
 POST /api/auth/register with JSON body:
 {
   "name": "Alice",
@@ -122,18 +121,18 @@ POST /api/auth/register with JSON body:
   "password": "pass1234"
 }
 
-2. Login
+ii) Login
 POST /api/auth/login → Get JWT token
-3. Create Task
+iii) Create Task
 POST /api/tasks with header Authorization: Bearer <token> and:
 {
   "title": "Finish project",
   "description": "Due soon"
 }
 
-4. View My Tasks
+iv) View My Tasks
 GET /api/tasks with token in header
-5. Admin Query of All Tasks
+v) Admin Query of All Tasks
 GET /api/tasks/all
 
 Conclusion
